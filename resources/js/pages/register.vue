@@ -1,7 +1,8 @@
 <script setup>
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import logo from '@images/logo.svg?raw'
-import axios from "axios";
+import axios from "axios"
+import router from "@/router"
 
 const form = ref({
   name: '',
@@ -11,7 +12,13 @@ const form = ref({
 })
 
 async function register() {
-  const response = await axios.post('/auth/register', form.value)
+  try {
+    const response = await axios.post('/api/register', form.value)
+
+    await router.push('/login')
+  } catch (error){
+    console.log(error)
+  }
 }
 
 const isPasswordVisible = ref(false)

@@ -2,15 +2,29 @@
 
 namespace App\Models;
 
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles,LaravelPermissionToVueJS;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'user_tel'
+    ];
 
     // Rest omitted for brevity
 
@@ -19,7 +33,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
@@ -27,12 +41,13 @@ class User extends Authenticatable implements JWTSubject
     /**
      * @return array
      */
-    public function getParamsUser(){
+    public function getParamsUser(): array
+    {
         return [
-                'fullName' => $this->name,
+                'name' => $this->name,
                 'id' => $this->id,
                 'role' => $this->role->name ?? 'no role',
-                'username' => $this->email,
+                'email' => $this->email,
             ];
     }
 

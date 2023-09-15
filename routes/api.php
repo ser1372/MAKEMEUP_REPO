@@ -3,6 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Api\{
+    RoleController,
+    UserController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -22,15 +27,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group([
 
     'middleware' => 'api',
-    'namespace' => 'App\Http\Controllers\Auth',
     'prefix' => 'auth'
 
 ], function ($router) {
 
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('login', [AuthController::class,'login']);
+    Route::post('logout', [AuthController::class,'logout']);
+    Route::post('refresh', [AuthController::class,'refresh']);
+    Route::post('me', [AuthController::class,'me']);
 
 });
+
+
+
+Route::prefix('role')->name('role.')->group(function() {
+    Route::apiResource('roles', RoleController::class);
+});
+
+Route::prefix('users')->name('users')->group(function(){
+    Route::apiResource('user',UserController::class);
+});
+
+
+Route::post('register',[RegisterController::class,'register']);
 
