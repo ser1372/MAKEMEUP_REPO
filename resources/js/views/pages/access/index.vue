@@ -20,6 +20,7 @@ export default {
 </script>
 
 <template>
+  <a href="/access/create"><VBtn class="mb-5">Create Role</VBtn></a>
   <VTable v-if="roles && roles.length > 0">
     <thead>
       <tr>

@@ -20,7 +20,13 @@ const router = createRouter({
         },
         {
           path: 'access',
-          component: () => import('@/views/pages/permissions/PermissionList.vue'),
+          component: () => import('@/views/pages/access/index.vue'),
+          children: [
+            {
+              path: 'create',
+              component: () => import('@/views/pages/access/create.vue'),
+            },
+          ],
         },
         {
           path: 'typography',

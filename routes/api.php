@@ -3,11 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Api\{
-    RoleController,
-    UserController
-};
+use App\Http\Controllers\Auth\RegisterContller;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,8 +39,15 @@ Route::group([
 
 
 
-Route::prefix('role')->name('role.')->group(function() {
-    Route::apiResource('roles', RoleController::class);
+Route::prefix('roles')->name('roles.')->group(function() {
+    Route::apiResource('role', RoleController::class)
+        ->names([
+            'index' => 'role.index',
+            'store' => 'role.store',
+            'show' => 'role.show',
+            'update' => 'role.update',
+            'destroy' => 'role.destroy',
+        ]);
 });
 
 Route::prefix('users')->name('users')->group(function(){

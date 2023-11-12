@@ -12,6 +12,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 
 loadFonts()
+console.log(router)
 
 // Create vue app
 const app = createApp(App)
