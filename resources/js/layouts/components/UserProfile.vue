@@ -1,5 +1,5 @@
 <script setup>
-import avatar1 from '@images/avatars/avatar-1.png'
+import avatar from '@images/avatars/no-avatar.png'
 import { useAuthStore } from "@/store/Auth"
 
 const user = useAuthStore()
@@ -19,7 +19,7 @@ const user = useAuthStore()
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VImg :src="avatar" />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -44,14 +44,14 @@ const user = useAuthStore()
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VImg :src="avatar" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>
             </template>
 
             <VListItemTitle class="font-weight-semibold">
-              {{ user.currentUser.fullName }}
+              {{ user.currentUser.name }}
             </VListItemTitle>
             <VListItemSubtitle>Admin</VListItemSubtitle>
           </VListItem>

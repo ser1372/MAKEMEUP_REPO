@@ -19,6 +19,16 @@ const router = createRouter({
           component: () => import('../pages/account-settings.vue'),
         },
         {
+          path: 'access',
+          component: () => import('@/views/pages/access/index.vue'),
+          children: [
+            {
+              path: 'create',
+              component: () => import('@/views/pages/access/create.vue'),
+            },
+          ],
+        },
+        {
           path: 'typography',
           component: () => import('../pages/typography.vue'),
         },
@@ -63,10 +73,13 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
+
+  // Initialize the auth store
+  await authStore.initialize()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const isAuthenticated = authStore.isAuthenticated
 
-  // Если требуется авторизация и пользователь не авторизован
+
   if (requiresAuth && !isAuthenticated) {
     next({
       path: '/login',

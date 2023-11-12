@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sneat - Vuetify Vuejs Admin Template</title>
   <link rel="stylesheet" type="text/css" href="{{ asset('loader.css') }}" />
+    @routes
   @vite(['resources/js/main.js'])
 </head>
 
@@ -56,7 +57,7 @@
       </div>
     </div>
   </div>
-  
+
   <script>
     const loaderColor = localStorage.getItem('sneat-initial-loader-bg') || '#FFFFFF'
     const primaryColor = localStorage.getItem('sneat-initial-loader-color') || '#696CFF'

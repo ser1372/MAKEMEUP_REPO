@@ -13,21 +13,26 @@ const form = ref({
   password: '',
 })
 
-const state = reactive({
+const state = ref({
   errors: [],
 })
 
 async function login() {
-  const response = await axios.post('/api/auth/login', form.value)
-  if (response.data.errors){
-    state.errors = response.data.errors
-    console.log(state.errors)
-  } else{
-    user.setAuth(response.data.access_token)
-    user.setUser(response.data.user)
-    await router.push('/dashboard')
+  try {
+    const response = await axios.post('/api/auth/login', form.value)
+    if(response.status != 401) {
+      user.setAuth(response.data.access_token)
+      await router.push('/dashboard')
+    }
+  } catch (error) {
+    if(error.response && error.response.status === 422) {
+      state.errors = error.response.data.errors
+      console.log(state.errors)
+    }
   }
 }
+
+
 
 const isPasswordVisible = ref(false)
 </script>

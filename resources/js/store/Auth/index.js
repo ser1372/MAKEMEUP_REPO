@@ -1,27 +1,42 @@
 // store/auth.js
 import { defineStore } from 'pinia'
-import { getUserData } from "@/auth/utils"
+import { UserRepository } from "@/repositories/userRepository"
 
-const user = getUserData()
+const userRepository = new UserRepository()
+
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    isAuthenticated: !!localStorage.getItem('jwtToken'),
-    currentUser: user,
+    isAuthenticated: false,
+    currentUser: null,
   }),
   actions: {
     setAuth(data) {
       this.isAuthenticated = true
+      localStorage.setItem('jwtToken', data)
+    },
 
-      return localStorage.setItem('jwtToken', data)
+    async initialize() {
+      let userData = null
+      try {
+        userData = await userRepository.getCurrentUser()
+        if (userData) {
+          this.isAuthenticated = true
+          this.currentUser = userData
+        } else {
+          this.currentUser = null
+        }
+      } catch (error) {
+        console.error('An error occurred:', error)
+        this.currentUser = null
+      }
     },
-    setUser(user) {
-      return localStorage.setItem('user', JSON.stringify(user))
-    },
-    logout() {
-      localStorage.removeItem('jwtToken')
-      localStorage.removeItem('user')
+
+    async logout() {
       this.isAuthenticated = false
-      this.currentUser = false
+      this.currentUser = null
+
+      return await userRepository.logoutCurrentUser()
     },
   },
 })
